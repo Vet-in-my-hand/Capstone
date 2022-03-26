@@ -3,4 +3,10 @@
 - Mobile
 - Web client
 
-## 🕘 Project Period
+## 🕘: Project Period
+2022.03.07 ~ 
+
+# 🔍: Thchnical Skills
+- Framework: React.js - web / ReactNative.js - mobile
+- Main language: Javascript ES6+
+- Server: Firebase 
