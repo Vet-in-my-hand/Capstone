@@ -10,3 +10,13 @@
 - Framework: React.js - web / ReactNative.js - mobile
 - Main language: Javascript ES6+
 - Server: Firebase 
+
+## TODO
+```
+회의중
+```
+
+## Complete
+```
+
+```
