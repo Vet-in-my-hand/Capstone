@@ -26,14 +26,16 @@ function Register() {
                     <Typography component="h1" variant="h3">
                         Sign up
                     </Typography>
+                    <Box component="form" noValidate sx={{ mt: 1 }}>
                     <Grid container>
                         <Grid itme xs>
                             <TextField
                                 margin="normal"
-                                label="Email Address"
-                                name="email"
                                 required
                                 fullWidth
+                                label="Email Address"
+                                name="email"
+                                id="email"
                                 autoFocus
                                 variant="standard"
                             />
@@ -41,7 +43,7 @@ function Register() {
                         <Grid item>
                             <Button
                                 margin="normal"
-                                type="submit"
+                                type="button"
                                 fullWidth
                                 variant="contained"
                                 size="medium"
@@ -53,6 +55,7 @@ function Register() {
                         margin="normal"
                         label="Passward"
                         name="passward"
+                        id="passward"
                         required
                         fullWidth
                         variant="standard"
@@ -61,6 +64,7 @@ function Register() {
                         margin="normal"
                         label="Confirm Passward"
                         name="confirmPassward"
+                        id="confirmPassward"
                         required
                         fullWidth
                         variant="standard"
@@ -71,6 +75,7 @@ function Register() {
                                 margin="normal"
                                 label="사업자번호"
                                 name="businesNumber"
+                                id="businesNumber"
                                 required
                                 fullWidth
                                 variant="standard"
@@ -79,7 +84,7 @@ function Register() {
                         <Grid>
                             <Button
                                 margin="normal"
-                                type="submit"
+                                type="button"
                                 fullWidth
                                 variant="contained"
                                 size="medium"
@@ -90,13 +95,14 @@ function Register() {
                     </Grid>
                     <Button
                         onClick={registerHandler}
-                        type="submit"
+                        type="button"
                         fullWidth
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                     >
                         Sign up
                     </Button>
+                </Box>
                 </Box>
             </Container>
         </>

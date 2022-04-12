@@ -11,11 +11,11 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-function Login() {
 
-    const theme = createTheme();
+function Login() {
+   
     return (
-        <ThemeProvider theme={theme}>
+       <>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
@@ -26,21 +26,21 @@ function Login() {
                         alignItems: 'center',
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
+
+                    <Typography component="h1" variant="h3">
                         Sign in
                     </Typography>
+
                     <Box component="form" noValidate sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
                             required
                             fullWidth
-                            id="email"
                             label="Email Address"
+                            id="email"
                             name="email"
                             autoComplete="email"
+                            variant="standard"
                             autoFocus
                         />
                         <TextField
@@ -51,20 +51,19 @@ function Login() {
                             label="Password"
                             type="password"
                             id="password"
+                            variant="standard"
                             autoComplete="current-password"
                         />
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
-                        />
+
                         <Button
-                            type="submit"
+                            type="button"
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                         >
                             Sign In
                         </Button>
+
                         <Grid container>
                             <Grid item xs>
                                 <Link href="#" variant="body2">
@@ -81,7 +80,8 @@ function Login() {
                 </Box>
                 {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
             </Container>
-        </ThemeProvider>
+            </>
+        
     );
 }
 

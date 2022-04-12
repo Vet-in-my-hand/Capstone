@@ -1,4 +1,5 @@
 import './App.css';
+import analytics from './firebase';
 import {
   BrowserRouter,
   Routes,
