@@ -8,7 +8,7 @@ import {
 
 import Login from './components/Auth/login';
 import Register from './components/Auth/register';
-import MainCover from './main_cover/main_cover';
+import MainCover from './components/main_cover/main_cover';
 
 
 function App() {

@@ -3,13 +3,34 @@ import Grid from '@mui/material/Grid';
 import { Container } from "@mui/material";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import React, { useState } from 'react';
 
 // import styles from 'register.module.css';
 
 function Register() {
 
+    const auth = getAuth();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+   
+
+
+    const emailChangehandler =(event) => {
+        setEmail(event.target.value);
+    }
+
+    const passwardChangehandler =(event) => {
+        setPassword(event.target.value);
+    }
+
     const registerHandler = () => {
-        
+        createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            console.log(user);
+        })
     }
     return (
         <>
@@ -36,8 +57,9 @@ function Register() {
                                 label="Email Address"
                                 name="email"
                                 id="email"
-                                autoFocus
                                 variant="standard"
+                                autoFocus
+                                onChange={emailChangehandler}
                             />
                         </Grid>
                         <Grid item>
@@ -58,6 +80,7 @@ function Register() {
                         id="passward"
                         required
                         fullWidth
+                        onChange={passwardChangehandler}
                         variant="standard"
                     />
                     <TextField
