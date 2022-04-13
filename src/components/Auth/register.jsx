@@ -78,6 +78,7 @@ function Register() {
                         label="Passward"
                         name="passward"
                         id="passward"
+                        type="password"
                         required
                         fullWidth
                         onChange={passwardChangehandler}
@@ -88,6 +89,7 @@ function Register() {
                         label="Confirm Passward"
                         name="confirmPassward"
                         id="confirmPassward"
+                        type="password"
                         required
                         fullWidth
                         variant="standard"
