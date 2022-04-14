@@ -5,6 +5,7 @@ import {BrowserRouter, Routes, Route} from "react-router-dom";
 import Login from './components/auth/login';
 import Register from './components/auth/register';
 import MainCover from './components/mainCover/mainCover';
+// import MainCover from './components/mainCover/mainCover';
 import Sidebar from './components/sidebar/sidebar';
 
 function App() {
