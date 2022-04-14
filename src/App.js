@@ -2,10 +2,10 @@ import './App.css';
 import analytics from './firebase';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 
-import Login from './components/Auth/login';
-import Register from './components/Auth/register';
-import MainCover from './main_cover/main_cover';
-import Sidebar from './components/Sidebar/sidebar';
+import Login from './components/auth/login';
+import Register from './components/auth/register';
+import MainCover from './components/mainCover/mainCover';
+import Sidebar from './components/sidebar/sidebar';
 
 function App() {
     return (
