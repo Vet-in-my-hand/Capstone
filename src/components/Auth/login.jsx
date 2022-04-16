@@ -15,7 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 function Login() {
    
     return (
-       <>
+       <div className='loginWarp'>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
@@ -79,7 +79,7 @@ function Login() {
                 </Box>
                 {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
             </Container>
-            </>
+            </div>
         
     );
 }

@@ -103,6 +103,7 @@ function Register() {
 
                 <Box
                     sx={{
+                        marginTop: 8,
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -203,27 +204,53 @@ function Register() {
                             required
 
                         />
+
+                        {/* 지울꺼임 */}
+                        <Grid container>
+                            <Grid item xs>
+                                <TextField
+                                    margin="normal"
+                                    label="사업자번호"
+                                    name="businesNumber"
+                                    id="businesNumber"
+                                    required
+                                    fullWidth
+                                    variant="standard"
+                                />
+                            </Grid>
+                            <Grid>
+                                <Button
+                                    margin="normal"
+                                    type="button"
+                                    fullWidth
+                                    variant="contained"
+                                    size="medium"
+                                    sx={{ mt: 3 }}
+                                >인증</Button>
+                            </Grid>
+                        </Grid>
+
+
+
                         <Grid container>
                             <Grid item xs>
                                 <TextField
                                     margin="normal"
                                     label="우편번호"
-                                    defaultValue={zonecode}
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
+                                    variant="standard"
+                                // defaultValue={zonecode}
+                                // InputProps={{
+                                //     readOnly: true,
+                                // }}
                                 >
-
-
                                 </TextField>
-
                             </Grid>
                             <Grid>
                                 <Button
                                     onClick={handleOpen}>
                                     우편번호 검색
                                 </Button>
-                                <div>
+                                {/* <div>
                                     {open && (
                                         <Postcode
                                             // onComplete={handleComplete}
@@ -235,16 +262,13 @@ function Register() {
                                         />
                                     )}
 
-                                </div>
+                                </div> */}
 
 
                             </Grid>
 
                         </Grid>
-                        <Button
-                            onClick={test1}>
-                            bubu
-                        </Button>
+
                         <Button
                             onClick={registerHandler}
                             type="button"
