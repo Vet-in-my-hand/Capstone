@@ -2,6 +2,7 @@ import React from "react"
 // import styled from "styled-components";
 import {Link} from "react-router-dom";
 import SidebarItem from "./sidebaritems";
+import "./sidebarcss.css"
 
 function Sidebar() {
     const menus = [
@@ -22,7 +23,7 @@ function Sidebar() {
             {
                 menus.map((menu, index) => {
                     return (
-                        <Link to={menu.path} key={index}>
+                        <Link className="sidebarMenu" to={menu.path} key={index}>
                             <SidebarItem menu={menu}/>
                         </Link>
                     );
