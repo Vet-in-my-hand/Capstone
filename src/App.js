@@ -1,5 +1,5 @@
 import './App.css';
-import analytics from './firebase';
+// import app from './firebase';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 
 import Login from './components/auth/login';

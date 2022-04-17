@@ -1,3 +1,17 @@
 .btn_check{
     width: 40px;
 }
+
+.postCode_btn{
+    display: block;
+    position: absolute;
+    top: 7%;
+    left: 35%;
+    float: right;
+    width: 50px;
+    height: auto;
+}
+
+/* .registerWarp{
+    margin-top: 10px;
+} */

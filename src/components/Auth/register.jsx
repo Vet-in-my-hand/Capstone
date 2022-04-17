@@ -3,50 +3,73 @@ import Grid from '@mui/material/Grid';
 import { Container } from "@mui/material";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-// import Modal from '@mui/material/Modal';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from 'react';
 import DaumPostcode from 'react-daum-postcode';
-// import { width } from "@mui/system";
-// import Postcode from "./postcode";
-// import styles from './register.module.css'
+import styles from './register.module.css'
+import { authService } from "../../firebase";
+import { newHospitalInit } from "../../service/authService";
 
 
 function Register() {
     const postcodeStyle = {
         display: "block",
         position: "absolute",
+        left: "35%",
         top: "10%",
         width: "600px",
         height: "600px",
-        padding: "7px",
+        border: "1px solid black"
     }
 
-    const auth = getAuth();
+    // const auth = getAuth();
+    // const db = getFirestore(app);
+    // const dispatch = useDispatch();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassward, setConfirmPassward] = useState('');
+    const [businesNumber, setBusinesNumber] = useState('');
+    const [hospitalName, setHospitalName] = useState('');
+    const [hospitalTel, setHospitalTel] = useState('');
+    const [hospitalUid, setHospitalUid] = useState('');
+
+    const emailChangehandler = (event) => setEmail(event.target.value);
+    const passwardChangehandler = (event) => setPassword(event.target.value);
+    const confirmPasswardChangehandler = (event) => setConfirmPassward(event.target.value);
+    const businesNumberChangehandler = (event) => setBusinesNumber(event.target.value);
+    const hospitalNameChangehandler = (event) => setHospitalName(event.target.value);
+    const hospitalTelChangehandler = (event) => setHospitalTel(event.target.value);
+
+    const registerHandler = async () => {
+        await authService.createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                setHospitalUid(user.uid);
+                console.log(user.uid);
+                newHospitalInit(hospitalName, hospitalTel, fullAddress, extraAddress, user.uid);
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode);
+                console.log(errorMessage);
+            })
+
+    }
+
+    const [open, SetOpen] = useState(false);
+
+    const handleOpen = () => SetOpen(true);
+    const handleClose = () => SetOpen(false);
 
     const [fullAddress, setFullAddress] = useState('');
     const [extraAddress, setExtraAddress] = useState('');
     const [zonecode, setZonecode] = useState('');
 
-    const [open, SetOpen] = useState(false);
-    const handleOpen = () => {
-        SetOpen(true);
-        console.log(open)
-    };
-    const handleClose = () => {
-        SetOpen(false);
-        console.log(open);
-    }
-    const test1 = () => {
-        console.log(fullAddress);
-        console.log(zonecode);
-    }
+    const extraAddressChangehandler = (event) => setExtraAddress(event.target.value);
 
     const Postcode = (props) => {
         const handleComplete = (data) => {
-            console.log('열림');
             let fullAddress = data.address;
             let zonecode = data.zonecode;
             let extraAddress = '';
@@ -75,35 +98,18 @@ function Register() {
                     onComplete={handleComplete}
                     style={postcodeStyle} />
                 <button type='button'
-                    onClick={() => { props.onClose() }} className='postCode_btn'>닫기</button>
+                    onClick={() => { props.onClose() }} className={styles.postCode_btn}>닫기</button>
             </div>
         );
-
     }
 
-
-    const emailChangehandler = (event) => {
-        setEmail(event.target.value);
-    }
-
-    const passwardChangehandler = (event) => {
-        setPassword(event.target.value);
-    }
-
-    const registerHandler = () => {
-        createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                console.log(user);
-            })
-    }
     return (
-        <div className="registerWarp">
+        <div className={styles.registerWarp}>
             <Container component="main" maxWidth="xs">
 
                 <Box
                     sx={{
-                        marginTop: 8,
+                        // marginTop: 8,
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -151,12 +157,13 @@ function Register() {
                         />
                         <TextField
                             margin="normal"
-                            label="Confirm Passward"
+                            label="ConfirmPassward"
                             name="confirmPassward"
                             id="confirmPassward"
                             type="password"
                             required
                             fullWidth
+                            onChange={confirmPasswardChangehandler}
                             variant="standard"
                         />
                         <Grid container>
@@ -168,6 +175,7 @@ function Register() {
                                     id="businesNumber"
                                     required
                                     fullWidth
+                                    onChange={businesNumberChangehandler}
                                     variant="standard"
                                 />
                             </Grid>
@@ -189,9 +197,9 @@ function Register() {
                             name="hospitalName"
                             id="hospitalName"
                             fullWidth
-                            variant="standard"
                             required
-
+                            onChange={hospitalNameChangehandler}
+                            variant="standard"
                         />
 
                         <TextField
@@ -200,20 +208,16 @@ function Register() {
                             name="hospitalPhoneNumber"
                             id="hospitalPhoneNumber"
                             fullWidth
-                            variant="standard"
                             required
-
+                            onChange={hospitalTelChangehandler}
+                            variant="standard"
                         />
-
-                        {/* 지울꺼임 */}
                         <Grid container>
                             <Grid item xs>
                                 <TextField
                                     margin="normal"
-                                    label="사업자번호"
-                                    name="businesNumber"
-                                    id="businesNumber"
-                                    required
+                                    label="주소"
+                                    value={fullAddress}
                                     fullWidth
                                     variant="standard"
                                 />
@@ -222,53 +226,41 @@ function Register() {
                                 <Button
                                     margin="normal"
                                     type="button"
+                                    onClick={handleOpen}
                                     fullWidth
                                     variant="contained"
                                     size="medium"
                                     sx={{ mt: 3 }}
-                                >인증</Button>
+                                >주소검색</Button>
                             </Grid>
                         </Grid>
-
 
 
                         <Grid container>
-                            <Grid item xs>
+                            <Grid item xs={10}>
                                 <TextField
                                     margin="normal"
-                                    label="우편번호"
+                                    label="나머지 주소입력"
+                                    fullWidth
+                                    required
                                     variant="standard"
-                                // defaultValue={zonecode}
-                                // InputProps={{
-                                //     readOnly: true,
-                                // }}
+                                    onChange={extraAddressChangehandler}
                                 >
                                 </TextField>
                             </Grid>
-                            <Grid>
-                                <Button
-                                    onClick={handleOpen}>
-                                    우편번호 검색
-                                </Button>
-                                {/* <div>
-                                    {open && (
-                                        <Postcode
-                                            // onComplete={handleComplete}
-                                            onClose={handleClose}
-                                            // setFullAddress={fullAddress}
-                                            // setZonecode={zonecode}
+                            <Grid item xs={2}>
+                                <TextField
+                                    margin="normal"
+                                    label="우편번호"
+                                    value={zonecode}
+                                    fullWidth
+                                    variant="standard"
+                                >
 
-                                            style={postcodeStyle}
-                                        />
-                                    )}
-
-                                </div> */}
-
+                                </TextField>
 
                             </Grid>
-
                         </Grid>
-
                         <Button
                             onClick={registerHandler}
                             type="button"
@@ -281,6 +273,14 @@ function Register() {
                     </Box>
                 </Box>
             </Container>
+            <div>
+                {open && (
+                    <Postcode
+                        onClose={handleClose}
+                        style={postcodeStyle}
+                    />
+                )}
+            </div>
         </div>
     )
 }
