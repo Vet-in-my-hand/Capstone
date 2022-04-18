@@ -2,6 +2,8 @@
     position: fixed;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     background-color: rgb(41, 135, 230);
     height: 100vh;
     width: 18vw;
@@ -9,7 +11,22 @@
 .sidebarMenu {
     color: white;
     text-decoration: none;
+    float: left;
+    width: max-content;
+    height: max-content;
+    border-radius: 20px;
+    transition-duration: 0.2s;
 }
 .sidebarMenu:visited {
     text-decoration: none;
+}
+
+.sidebarMenu:active {
+    margin-left: 3px;
+    margin-top: 3px;
+    box-shadow: none;
+}
+
+.sidebarHosName {
+    margin-bottom: 15rem;
 }

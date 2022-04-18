@@ -2,7 +2,7 @@ import React from "react"
 // import styled from "styled-components";
 import {Link} from "react-router-dom";
 import SidebarItem from "./sidebaritems";
-import styles from './sidebar.module.css';
+import styles from "./sidebar.module.css";
 
 function Sidebar() {
     const menus = [
@@ -20,6 +20,9 @@ function Sidebar() {
     ]
     return (
         <div className={styles.sidebar}>
+            <div className={styles.sidebarHosName}>
+                병원 이름
+            </div>
             {
                 menus.map((menu, index) => {
                     return (
@@ -29,6 +32,9 @@ function Sidebar() {
                     );
                 })
             }
+            <div>
+                로그아웃
+            </div>
         </div>
     );
 }
