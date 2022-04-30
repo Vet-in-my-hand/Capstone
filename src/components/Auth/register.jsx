@@ -3,12 +3,13 @@ import Grid from '@mui/material/Grid';
 import { Container } from "@mui/material";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DaumPostcode from 'react-daum-postcode';
 import styles from './register.module.css'
 import { authService } from "../../firebase";
 import { newHospitalInit } from "../../service/authService";
-
+import { useNavigate } from "react-router-dom"
+import axios from "axios";
 
 function Register() {
     const postcodeStyle = {
@@ -21,9 +22,45 @@ function Register() {
         border: "1px solid black"
     }
 
-    // const auth = getAuth();
-    // const db = getFirestore(app);
-    // const dispatch = useDispatch();
+    const [businesFlag, setBusinesFlag] = useState(false);
+    const businesData = [];
+    const [tset22, setTset22] = useState([]);
+
+
+    const url = ['http://openapi.seoul.go.kr:8088/636272715a706a6836387649795744/json/LOCALDATA_020301/1/1000/',
+        'http://openapi.seoul.go.kr:8088/636272715a706a6836387649795744/json/LOCALDATA_020301/1001/2000/',
+        'http://openapi.seoul.go.kr:8088/636272715a706a6836387649795744/json/LOCALDATA_020301/2001/3000/']
+
+    useEffect(() => {
+        axios
+            .all([axios.get(url[0]), axios.get(url[1]), axios.get(url[2])])
+            .then(
+                axios.spread((res1, res2, res3) => {
+                    const temp = res1.data.LOCALDATA_020301.row;
+                    const temp2 = res2.data.LOCALDATA_020301.row;
+                    const temp3 = res3.data.LOCALDATA_020301.row;
+                    console.log(temp[0].MGTNO)
+                    businesData.push(Object.values(temp));
+                    setTset22(Object.values(temp));
+                })
+            )
+    }, [])
+
+    const [test33, setTest33] = useState({});
+
+    const getBusinesNumber = () => {
+        console.log(tset22)
+        tset22.forEach(e => {
+            if (e.MGTNO === businesNumber) {
+                setTest33({ MGTNO: e.MGTNO, BPLCNM: e.BPLCNM, TRDSTATEGBN: e.TRDSTATEGBN });
+            }
+        });
+        // const data = result1.filter(e=>e.MGTNO===businesNumber);
+        console.log(businesFlag);
+        console.log('tset33', test33);
+    }
+
+    const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -37,20 +74,42 @@ function Register() {
     const passwardChangehandler = (event) => setPassword(event.target.value);
     const confirmPasswardChangehandler = (event) => setConfirmPassward(event.target.value);
     const businesNumberChangehandler = (event) => setBusinesNumber(event.target.value);
+
+
     const hospitalNameChangehandler = (event) => setHospitalName(event.target.value);
     const hospitalTelChangehandler = (event) => setHospitalTel(event.target.value);
 
-    const registerHandler = async () => {
-        await authService.createUserWithEmailAndPassword(email, password)
+    const registerHandler = (event) => {
+        event.preventDefault();
+        if (password !== confirmPassward) {
+            return alert('비밀번호와 비밀번호 확인은 같아야 합니다.');
+        }
+        authService.createUserWithEmailAndPassword(email, password)
             .then((userCredential) => {
                 const user = userCredential.user;
                 setHospitalUid(user.uid);
                 console.log(user.uid);
                 newHospitalInit(hospitalName, hospitalTel, fullAddress, extraAddress, user.uid);
             })
+            .then(() => {
+                const user = authService.currentUser;
+
+                user.sendEmailVerification()
+                    .then(() => {
+                        alert('작성한 이메일로 인증을 보냅니다.\n인증하지않고 로그인을 시도할경우, 회원정보는 사라집니다.');
+                        console.log(user.emailVerified);
+                    })
+                    .catch('Email not sent!');
+                    
+                authService.signOut().then(()=>{
+                    navigate("/login");
+                })    
+                
+            })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
+                alert(errorMessage);
                 console.log(errorCode);
                 console.log(errorMessage);
             })
@@ -118,32 +177,20 @@ function Register() {
                     <Typography component="h1" variant="h3">
                         Sign up
                     </Typography>
-                    <Box component="form" noValidate sx={{ mt: 1 }}>
-                        <Grid container>
-                            <Grid itme xs>
-                                <TextField
-                                    margin="normal"
-                                    required
-                                    fullWidth
-                                    label="Email Address"
-                                    name="email"
-                                    id="email"
-                                    variant="standard"
-                                    autoFocus
-                                    onChange={emailChangehandler}
-                                />
-                            </Grid>
-                            <Grid item>
-                                <Button
-                                    margin="normal"
-                                    type="button"
-                                    fullWidth
-                                    variant="contained"
-                                    size="medium"
-                                    sx={{ mt: 3 }}
-                                >인증</Button>
-                            </Grid>
-                        </Grid>
+                    <Box component="form" onSubmit={registerHandler} sx={{ mt: 1 }}>
+
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            type="email"
+                            label="Email Address"
+                            name="email"
+                            id="email"
+                            variant="standard"
+                            autoFocus
+                            onChange={emailChangehandler}
+                        />
                         <TextField
                             margin="normal"
                             label="Passward"
@@ -166,7 +213,7 @@ function Register() {
                             onChange={confirmPasswardChangehandler}
                             variant="standard"
                         />
-                        <Grid container>
+                        {/* <Grid container>
                             <Grid item xs>
                                 <TextField
                                     margin="normal"
@@ -186,11 +233,12 @@ function Register() {
                                     fullWidth
                                     variant="contained"
                                     size="medium"
+                                    onClick={getBusinesNumber}
                                     sx={{ mt: 3 }}
                                 >인증</Button>
                             </Grid>
 
-                        </Grid>
+                        </Grid> */}
                         <TextField
                             margin="normal"
                             label="병원이름"
@@ -219,6 +267,7 @@ function Register() {
                                     label="주소"
                                     value={fullAddress}
                                     fullWidth
+                                    required
                                     variant="standard"
                                 />
                             </Grid>
@@ -242,7 +291,6 @@ function Register() {
                                     margin="normal"
                                     label="나머지 주소입력"
                                     fullWidth
-                                    required
                                     variant="standard"
                                     onChange={extraAddressChangehandler}
                                 >
@@ -262,8 +310,7 @@ function Register() {
                             </Grid>
                         </Grid>
                         <Button
-                            onClick={registerHandler}
-                            type="button"
+                            type="submit"
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}

@@ -7,6 +7,7 @@ import Register from './components/auth/register';
 import MainCover from './components/mainCover/mainCover';
 // import MainCover from './components/mainCover/mainCover';
 import Sidebar from './components/sidebar/sidebar';
+import HelloHos from './components/work/helloHos';
 
 function App() {
     return (
@@ -18,6 +19,8 @@ function App() {
                     <Route path="/" element={<MainCover/>}/>
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/register" element={<Register/>}/>
+                    <Route path="/hellohos" element={<HelloHos/>}/>
+                    
                     
 
                 </Routes>
