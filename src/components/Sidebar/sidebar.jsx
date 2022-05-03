@@ -2,6 +2,7 @@ import React from "react"
 import { Link, useNavigate } from "react-router-dom";
 import SidebarItem from "./sidebaritems";
 import styles from "./sidebar.module.css";
+import { authService } from "../../firebase";
 import { Token } from "../../storage/tokenStorage"
 
 function Sidebar() {
@@ -25,8 +26,10 @@ function Sidebar() {
 
     const onClickLogoutHandler = (e) => {
         e.preventDefault()
-        storage.clear()
-        navigate('/login')
+        authService.signOut().then(() => {
+            storage.clear()
+            navigate('/login')
+        })
     }
     return (
         <div className={styles.sidebar}>
