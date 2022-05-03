@@ -4,8 +4,11 @@ import {Link, useNavigate} from "react-router-dom";
 import HomeIcon from '@mui/icons-material/Home';
 import LoginIcon from '@mui/icons-material/Login';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
+import { authService } from '../../firebase';
 
 function SideNav() {
+    const isLogined =  localStorage.getItem
+
     const navigate = useNavigate();
 
     const onClickHomeHandler = (e) => {
@@ -20,6 +23,14 @@ function SideNav() {
         e.preventDefault()
         navigate('/register');
     }
+
+    const onClickLogoutHandler = (e) => {
+        e.preventDefault()
+        authService.signOut().then(() => {
+            localStorage.clear();
+            navigate('/login');
+        })
+    }
     return (
         <div className='sidebar'>
             <div className='sidebarWrapper'>
@@ -30,14 +41,22 @@ function SideNav() {
                             <HomeIcon className='sidebarIcon'/>
                             Home
                         </li>
-                        <li className='sidebarListItem' onClick={onClickLoginHandler}>
+
+                        {
+                        localStorage.getItem('userToken') ? 
+                           <li className='sidebarListItem' onClick={onClickLogoutHandler}>
+                            <HowToRegIcon className='sidebarIcon'/>
+                            logout
+                        </li> : <li className='sidebarListItem' onClick={onClickLoginHandler}>
                             <LoginIcon className='sidebarIcon'/>
                             Login
-                        </li>
+                        </li> 
+                        }
                         <li className='sidebarListItem' onClick={onClickRegisterHandler}>
                             <HowToRegIcon className='sidebarIcon'/>
                             Register
                         </li>
+                        
                     </ul>
                 </div>
             </div>
