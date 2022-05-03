@@ -12,6 +12,12 @@ import { useNavigate } from "react-router-dom"
 import axios from "axios";
 
 function Register() {
+    const url = [
+        'http://openapi.seoul.go.kr:8088/636272715a706a6836387649795744/json/LOCALDATA_020301/1/1000/',
+        'http://openapi.seoul.go.kr:8088/636272715a706a6836387649795744/json/LOCALDATA_020301/1001/2000/',
+        'http://openapi.seoul.go.kr:8088/636272715a706a6836387649795744/json/LOCALDATA_020301/2001/3000/',
+    ]
+
     const postcodeStyle = {
         display: "block",
         position: "absolute",
@@ -22,14 +28,10 @@ function Register() {
         border: "1px solid black"
     }
 
-    const [businesFlag, setBusinesFlag] = useState(false);
     const businesData = [];
+
+    const [businesFlag, setBusinesFlag] = useState(false);
     const [tset22, setTset22] = useState([]);
-
-
-    const url = ['http://openapi.seoul.go.kr:8088/636272715a706a6836387649795744/json/LOCALDATA_020301/1/1000/',
-        'http://openapi.seoul.go.kr:8088/636272715a706a6836387649795744/json/LOCALDATA_020301/1001/2000/',
-        'http://openapi.seoul.go.kr:8088/636272715a706a6836387649795744/json/LOCALDATA_020301/2001/3000/']
 
     useEffect(() => {
         axios

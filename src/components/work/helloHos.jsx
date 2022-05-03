@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import Calendar from 'react-calendar';
+import Calendar from 'react-calendar'
 import moment from 'moment'
-import { dbService } from "../../firebase";
+import { dbService } from "../../firebase"
 
 import styles from './helloHos.module.css'
 import 'react-calendar/dist/Calendar.css'
