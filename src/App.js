@@ -12,8 +12,8 @@ import HelloHos from './components/work/helloHos';
 function App() {
     return (
         <div className="App">
-            <BrowserRouter>
-            <Sidebar/>
+            <BrowserRouter className="browserRouter">
+                <Sidebar/>
                 <Routes>
                     <Route path="/" element={<MainCover/>}/>
                     <Route path="/login" element={<Login/>}/>

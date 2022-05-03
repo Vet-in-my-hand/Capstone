@@ -1,54 +1,48 @@
-import React from "react"
-import { Link, useNavigate } from "react-router-dom";
-import SidebarItem from "./sidebaritems";
-import styles from "./sidebar.module.css";
-import { authService } from "../../firebase";
-import { Token } from "../../storage/tokenStorage"
+import React from 'react';
+import './sidebar.css'
+import {Link, useNavigate} from "react-router-dom";
+import HomeIcon from '@mui/icons-material/Home';
+import LoginIcon from '@mui/icons-material/Login';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 
-function Sidebar() {
-    const storage = new Token()
+function SideNav() {
     const navigate = useNavigate();
 
-    const menus = [
-        {
-            name: '첫번째 화면',
-            path: '/'
-        }, 
-        {
-            name: '로그인 화면',
-            path: '/login'
-        }, 
-        {
-            name: '회원가입',
-            path: '/register'
-        }
-    ]
-
-    const onClickLogoutHandler = (e) => {
+    const onClickHomeHandler = (e) => {
         e.preventDefault()
-        authService.signOut().then(() => {
-            storage.clear()
-            navigate('/login')
-        })
+        navigate('/');
+    }
+    const onClickLoginHandler = (e) => {
+        e.preventDefault()
+        navigate('/login');
+    }
+    const onClickRegisterHandler = (e) => {
+        e.preventDefault()
+        navigate('/register');
     }
     return (
-        <div className={styles.sidebar}>
-            <div className={styles.sidebarHosName}>
-                병원 이름
-            </div>
-            {
-                menus.map((menu, index) => {
-                    return (
-                        <Link className={styles.sidebarMenu} to={menu.path} key={index}>
-                            <SidebarItem menu={menu}/>
-                        </Link>
-                    );
-                })
-            }
-            <div className={styles.logoutBtn} onClick={onClickLogoutHandler}>
-                로그아웃
+        <div className='sidebar'>
+            <div className='sidebarWrapper'>
+                <div className='sidebarMenu'>
+                    <h2 className='sidebarTitle'>Dashboard</h2>
+                    <ul className='sidebarList'>
+                        <li className='sidebarListItem' onClick={onClickHomeHandler}>
+                            <HomeIcon className='sidebarIcon'/>
+                            Home
+                        </li>
+                        <li className='sidebarListItem' onClick={onClickLoginHandler}>
+                            <LoginIcon className='sidebarIcon'/>
+                            Login
+                        </li>
+                        <li className='sidebarListItem' onClick={onClickRegisterHandler}>
+                            <HowToRegIcon className='sidebarIcon'/>
+                            Register
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     );
 }
-export default Sidebar;
+
+export default SideNav;
