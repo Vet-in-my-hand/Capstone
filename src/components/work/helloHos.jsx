@@ -1,43 +1,49 @@
-import { useState } from "react";
-import { authService } from "../../firebase";
-import { getHospitalInfo } from "../../service/authService";
-import { useNavigate } from "react-router-dom"
+import React, { useEffect, useState } from 'react'
+import Calendar from 'react-calendar';
+import moment from 'moment'
+import { dbService } from "../../firebase";
+
+import styles from './helloHos.module.css'
+import 'react-calendar/dist/Calendar.css'
+
 function HelloHos() {
+    const [reserve, setReserve] = useState([])
 
-    const navigate = useNavigate();
-    const user = authService.currentUser;
-    const test =()=>{
-        setA({...getHospitalInfo(user.uid)});
-        console.log(a);
-    }
-    const out = () => {
-        authService.signOut().then(()=>{
-            navigate("/login");
-        })    
-    }
-
-    const test2 = (event)=> setA(event.target.value);
-    const [a, setA] = useState({});
+    useEffect(() => {
+        getHospitalName.call(this, setReserve)
+    }, [])
 
     return(
-        <>
-        <input
-            onChange={test2}
-        ></input>
-        <button
-        type="button"
-        onClick={test}
-        >
-        
-        test</button>
-
-        <button
-        type="button"
-        onClick={out}
-        >
-        
-        out</button>
-        </>
+        <div className={styles.body}>
+            <Calendar 
+                tileClassName={({ date }) => {
+                    if (reserve.find((x) => x === moment(date).format("DD-MM-YYYY"))) {
+                        return "highlight";
+                    }
+                }}
+            />
+        </div>
     )
 }
+
+function getHospitalName(setReserve) {
+    const key = 'userToken'
+    dbService.collection('hospital').where('uid', '==', localStorage.getItem(key)).get().then(d => {
+        d.docs.forEach(data => {
+            getReservation(data.data().name, setReserve)
+        })
+    })
+}
+
+function getReservation(hospitalName, setReserve) {
+    dbService.collection('reservation').where('hospital', '==', `${hospitalName}`).get().then(d => {
+        const reserve = []
+        d.forEach(data => {
+            const date = data.data().date.toDate()
+            reserve.push(moment(date).format("DD-MM-YYYY"))
+        })
+        setReserve(reserve)
+    })
+}
+
 export default HelloHos;

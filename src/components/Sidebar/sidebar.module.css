@@ -30,3 +30,16 @@
 .sidebarHosName {
     margin-bottom: 15rem;
 }
+
+.logoutBtn {
+    color: white;
+    text-decoration: none;
+    float: left;
+    width: max-content;
+    height: max-content;
+    border-radius: 20px;
+}
+
+.logoutBtn:hover {
+    cursor: pointer;
+}

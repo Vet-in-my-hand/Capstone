@@ -14,6 +14,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { authService } from "../../firebase";
 import {useEffect, useState} from 'react'
 import { useNavigate } from "react-router-dom"
+import { Token } from "../../storage/tokenStorage"
 
 function Login() {
    const [isLogined, setIsLogined] = useState(false);
@@ -39,14 +40,12 @@ function Login() {
         authService.signInWithEmailAndPassword(email,password)
         .then((user) => {
             if(user.user.emailVerified){
-                console.log('이메일 인증되있음.')
+                const storage = new Token(authService.currentUser.uid)
+                storage.save()
                 navigate("/hellohos");
             }else{
                 alert('이메일 인증이 필요합니다.')
             }
-            // const user = authService.currentUser;
-            
-            // console.log(user);
         })
    }
 

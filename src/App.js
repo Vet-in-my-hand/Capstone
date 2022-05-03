@@ -15,14 +15,10 @@ function App() {
             <BrowserRouter>
             <Sidebar/>
                 <Routes>
-
                     <Route path="/" element={<MainCover/>}/>
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/register" element={<Register/>}/>
                     <Route path="/hellohos" element={<HelloHos/>}/>
-                    
-                    
-
                 </Routes>
             </BrowserRouter>
 
