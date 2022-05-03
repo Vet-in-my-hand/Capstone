@@ -29,6 +29,7 @@ function Register() {
     }
 
     const businesData = [];
+    const navigate = useNavigate();
 
     const [businesFlag, setBusinesFlag] = useState(false);
     const [tset22, setTset22] = useState([]);
@@ -48,22 +49,6 @@ function Register() {
             )
     }, [])
 
-    const [test33, setTest33] = useState({});
-
-    const getBusinesNumber = () => {
-        console.log(tset22)
-        tset22.forEach(e => {
-            if (e.MGTNO === businesNumber) {
-                setTest33({ MGTNO: e.MGTNO, BPLCNM: e.BPLCNM, TRDSTATEGBN: e.TRDSTATEGBN });
-            }
-        });
-        // const data = result1.filter(e=>e.MGTNO===businesNumber);
-        console.log(businesFlag);
-        console.log('tset33', test33);
-    }
-
-    const navigate = useNavigate();
-
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassward, setConfirmPassward] = useState('');
@@ -75,7 +60,6 @@ function Register() {
     const emailChangehandler = (event) => setEmail(event.target.value);
     const passwardChangehandler = (event) => setPassword(event.target.value);
     const confirmPasswardChangehandler = (event) => setConfirmPassward(event.target.value);
-    const businesNumberChangehandler = (event) => setBusinesNumber(event.target.value);
 
 
     const hospitalNameChangehandler = (event) => setHospitalName(event.target.value);
@@ -215,32 +199,6 @@ function Register() {
                             onChange={confirmPasswardChangehandler}
                             variant="standard"
                         />
-                        {/* <Grid container>
-                            <Grid item xs>
-                                <TextField
-                                    margin="normal"
-                                    label="사업자번호"
-                                    name="businesNumber"
-                                    id="businesNumber"
-                                    required
-                                    fullWidth
-                                    onChange={businesNumberChangehandler}
-                                    variant="standard"
-                                />
-                            </Grid>
-                            <Grid>
-                                <Button
-                                    margin="normal"
-                                    type="button"
-                                    fullWidth
-                                    variant="contained"
-                                    size="medium"
-                                    onClick={getBusinesNumber}
-                                    sx={{ mt: 3 }}
-                                >인증</Button>
-                            </Grid>
-
-                        </Grid> */}
                         <TextField
                             margin="normal"
                             label="병원이름"
