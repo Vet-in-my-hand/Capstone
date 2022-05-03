@@ -20,7 +20,6 @@ function App() {
                     <Route path="/infohos" element={<InfoHos />}/>
                 </Routes>
             </BrowserRouter>
-
         </div>
     );
 }
