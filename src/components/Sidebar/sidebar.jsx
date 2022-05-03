@@ -7,8 +7,6 @@ import HowToRegIcon from '@mui/icons-material/HowToReg';
 import { authService } from '../../firebase';
 
 function SideNav() {
-    const isLogined = localStorage.getItem
-
     const navigate = useNavigate();
 
     const onClickHomeHandler = (e) => {

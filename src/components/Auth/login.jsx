@@ -10,10 +10,11 @@ import { useNavigate } from "react-router-dom"
 import { Token } from "../../storage/tokenStorage"
 
 function Login() {
+    const navigate = useNavigate();
+
     const [isLogined, setIsLogined] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const navigate = useNavigate();
 
     const emailChangehandler = (event) => setEmail(event.target.value);
     const passwardChangehandler = (event) => setPassword(event.target.value);
@@ -29,8 +30,8 @@ function Login() {
     })
 
     const loginHandler = (event) => {
-            event.preventDefault();
-            authService.signInWithEmailAndPassword(email,password)
+        event.preventDefault();
+        authService.signInWithEmailAndPassword(email,password)
             .then((user) => {
                 if(user.user.emailVerified){
                     const storage = new Token(authService.currentUser.uid)
@@ -41,7 +42,6 @@ function Login() {
                 }
             })
     }
-
 
     return (
         <div className='loginWarp'>
@@ -94,8 +94,7 @@ function Login() {
                     </Box>
                 </Box>
             </Container>
-            </div>
-        
+        </div>
     );
 }
 

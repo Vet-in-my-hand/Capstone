@@ -5,7 +5,6 @@ export class Token {
         this.id = uid
     }
 
-    // login
     save() {
         localStorage.setItem(key, this.id)
     }
@@ -14,7 +13,6 @@ export class Token {
         return localStorage.getItem(key)
     }
 
-    // logout
     clear() {
         localStorage.clear();
     }
