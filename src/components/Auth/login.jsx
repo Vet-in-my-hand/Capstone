@@ -18,7 +18,7 @@ function Login() {
     const emailChangehandler = (event) => setEmail(event.target.value);
     const passwardChangehandler = (event) => setPassword(event.target.value);
 
-    useEffect(()=>{
+    useEffect(() => {
         authService.onAuthStateChanged((user) => {
             if (user) {
                 setIsLogined(true);
@@ -29,19 +29,22 @@ function Login() {
     })
 
     const loginHandler = (event) => {
-            event.preventDefault();
-            authService.signInWithEmailAndPassword(email,password)
+        event.preventDefault();
+        authService.signInWithEmailAndPassword(email, password)
             .then((user) => {
-                if(user.user.emailVerified){
+                if (user.user.emailVerified) {
                     const storage = new Token(authService.currentUser.uid)
                     storage.save()
                     navigate("/hellohos");
-                }else{
+                } else {
                     alert('이메일 인증이 필요합니다.')
                 }
             })
     }
 
+    const onClickRegisterHandeler = () => {
+        navigate('/register');
+    }
 
     return (
         <div className='loginWarp'>
@@ -91,11 +94,21 @@ function Login() {
                         >
                             Sign In
                         </Button>
+                        <Box>
+                            <Button
+                                variant='contained'
+                                onClick={onClickRegisterHandeler}
+                            >
+                                회원가입
+                            </Button>
+                        </Box>
+
+
                     </Box>
                 </Box>
             </Container>
-            </div>
-        
+        </div>
+
     );
 }
 

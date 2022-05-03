@@ -4,6 +4,7 @@ import Register from './components/auth/register';
 import MainCover from './components/mainCover/mainCover';
 import Sidebar from './components/sidebar/sidebar';
 import HelloHos from './components/work/helloHos';
+import InfoHos from "./components/work/infoHos";
 import './App.css';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
                     <Route path="/login" element={<Login />}/>
                     <Route path="/register" element={<Register />}/>
                     <Route path="/hellohos" element={<HelloHos />}/>
+                    <Route path="/infohos" element={<InfoHos />}/>
                 </Routes>
             </BrowserRouter>
 
