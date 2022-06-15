@@ -1,115 +1,139 @@
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { authService } from "../../firebase";
-import { useEffect, useState } from 'react'
-import { useNavigate } from "react-router-dom"
-import { Token } from "../../storage/tokenStorage"
+import { TextField, Typography, Grid, Button, Box, Container, Radio, Link } from "@mui/material";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { Token } from "../../storage/tokenStorage";
+import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
-function Login() {
+function Login () {
     const navigate = useNavigate();
 
-    const [isLogined, setIsLogined] = useState(false);
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
-    const emailChangehandler = (event) => setEmail(event.target.value);
-    const passwardChangehandler = (event) => setPassword(event.target.value);
-
-    useEffect(() => {
-        authService.onAuthStateChanged((user) => {
-            if (user) {
-                setIsLogined(true);
-            } else {
-                setIsLogined(false);
-            }
-        })
+    const [loginOption, setLoginOption] = useState('');
+    const [inputs, setInputs] = useState({
+        email: "",
+        password: "",
+        loginOption: "",
     })
 
-    const loginHandler = (event) => {
-        event.preventDefault();
-        authService.signInWithEmailAndPassword(email,password)
-            .then((user) => {
-                if (user.user.emailVerified) {
-                    const storage = new Token(authService.currentUser.uid)
-                    storage.save()
-                    navigate("/hellohos");
-                } else {
-                    alert('이메일 인증이 필요합니다.')
-                }
-            })
-    }
+    const {
+        email, password,
+    } = inputs;
 
-    const onClickRegisterHandeler = () => {
-        navigate('/register');
-    }
+    const handleChange = (event) => {
+        setLoginOption(event.target.value);
+      };
 
+    const onChange = e => {
+        setInputs({
+            ...inputs,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const loginHandler = (e) => {
+        e.preventDefault();
+        const auth = getAuth();
+        signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            const storage = new Token(user.uid);
+            storage.save()
+            if(loginOption === 'hospital') navigate('/hospital/main')
+            else if(loginOption ==='user') navigate('/user/main')
+            else alert("로그인 체크해야합니다!")
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            if(errorCode==='auth/user-not-found') alert("가입한 회원이 아닙니다.")
+            else if(errorCode==='auth/wrong-password') alert("비밀번호가 다릅니다.")
+            else if(errorCode==='auth/too-many-requests') alert("너무 많이 로그인 시도를 했습니다. 잠시 뒤에 하세요.")
+            console.error(errorCode, errorMessage);
+          });
+    }
+    
     return (
-        <div className='loginWarp'>
-            {isLogined ? "로그인" : "안로그인"}
+        <div>
             <Container component="main" maxWidth="xs">
-                <CssBaseline />
                 <Box
                     sx={{
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
+                        marginTop: '20%',
                     }}
                 >
-                    <Typography component="h1" variant="h3">
-                        Sign in
+                    <Typography
+                        component="h1"
+                        variant="h3"
+                    >
+                        로그인
                     </Typography>
-                    <Box component="form" onSubmit={loginHandler} sx={{ mt: 1 }}>
+                </Box>
+                <Box component="form" onSubmit={loginHandler} sx={{mt: 1}}>
+                    <Grid container>
+                        <Grid item xs={6}>
+                            <Radio
+                                checked={loginOption === 'hospital'}
+                                value="hospital"
+                                onChange={handleChange}
+                                >
+                            </Radio>
+                            <label>병원으로 로그인</label>
+                        </Grid>
+                        <Grid item xs={6}>
+                        <Radio
+                            checked={loginOption === 'user'}
+                            value="user"
+                            onChange={handleChange}
+                            >
+                        </Radio>
+                            <label>반려인으로 로그인</label>
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={12}>
                         <TextField
                             margin="normal"
                             required
                             fullWidth
-                            label="Email Address"
-                            id="email"
+                            type="email"
+                            label="이메일"
                             name="email"
-                            autoComplete="email"
+                            id="email"
                             variant="standard"
                             autoFocus
-                            onChange={emailChangehandler}
-                        />
+                            onChange={onChange}
+                        >
+                        </TextField>
                         <TextField
                             margin="normal"
                             required
                             fullWidth
-                            name="password"
-                            label="Password"
                             type="password"
+                            label="비밀번호"
+                            name="password"
                             id="password"
                             variant="standard"
-                            autoComplete="current-password"
-                            onChange={passwardChangehandler}
-                        />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
+                            onChange={onChange}
                         >
-                            Sign In
-                        </Button>
-                        <Box>
-                            <Button
-                                variant='contained'
-                                onClick={onClickRegisterHandeler}
-                            >
-                                회원가입
-                            </Button>
-                        </Box>
-
-
-                    </Box>
+                        </TextField>
+                    </Grid>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
+                    >
+                        로그인
+                    </Button>
+                    <Grid>
+                        <Link href="/register" variant="body2">
+                            회원이 아니시라면?
+                        </Link>
+                    </Grid>
                 </Box>
             </Container>
         </div>
-    );
+    )
 }
 
 export default Login;
